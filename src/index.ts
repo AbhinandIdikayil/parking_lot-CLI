@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import { create_parking_lot, leave_lot, park_vehicle, plate_numbers_by_colors, status } from './commands/commands'
+import { create_parking_lot, leave_lot, park_vehicle, plate_numbers_by_colors, status } from './commands/commands.js'
 
 const program = new Command()
 
@@ -11,7 +11,7 @@ program
 program
     .command('park <plate> <color>')
     .description('Allocate a parking spot to car with plate number and color color')
-    .action((plate: string , color: string) => park_vehicle(plate.toLocaleLowerCase(), color.toLowerCase()))
+    .action((plate: string, color: string) => park_vehicle(plate.toUpperCase(), color))
 
 program
     .command('leave <num>')
@@ -37,3 +37,5 @@ program
     .command('slot_number_for_registration_number <plate>')
     .description('Retrieve slot number for car with number')
     .action
+
+program.parse()

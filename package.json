@@ -2,8 +2,8 @@
   "name": "parking_lot",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "type": "commonjs",
+  "main": "build/index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
@@ -14,7 +14,12 @@
   "dependencies": {
     "@types/node": "^22.10.2",
     "chalk": "^4.1.2",
+    "cli-table3": "^0.6.5",
     "commander": "^12.1.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
+  },
+  "bin": {
+    "parking_lot": "bin/parking_lot.sh"
   }
 }

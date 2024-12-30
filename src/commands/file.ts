@@ -1,7 +1,7 @@
-const chalk = require("chalk");
-import exp from "constants";
+import chalk from "chalk";
 import * as fs from "fs";
 import * as  path from "path";
+import { fileURLToPath } from "url";
 
 interface ICar {
     registrationNumber: string;
@@ -16,10 +16,18 @@ interface IParkingLot {
     slots: ISlot[] | null;
 }
 
+// Get the directory name using import.meta.url
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 const filePath = path.join(__dirname, "parking_lot.json");
+async function saveFile(parking_lot: IParkingLot) {
+    await fs.promises.writeFile(filePath, JSON.stringify(parking_lot, null, 2));
 
-async function initializeFile(size: number) {
+}
+
+export async function initializeFile(size: number) {
     const slots: ISlot[] = Array.from({ length: size }, (_, index) => ({
         slotNumber: index + 1,
         car: null,
@@ -28,40 +36,39 @@ async function initializeFile(size: number) {
         size,
         slots,
     };
-    await fs.promises.writeFile(filePath, JSON.stringify(parkingLot, null, 2));
+    await saveFile(parkingLot)
+    // await fs.promises.writeFile(filePath, JSON.stringify(parkingLot, null, 2));
 }
 
-export async function getParking_lot(): Promise<IParkingLot> {
+async function getParking_lot(): Promise<IParkingLot> {
     const data = await fs.promises.readFile(filePath, "utf-8");
     return JSON.parse(data);
 }
 
-export async function saveFile(parking_lot: IParkingLot) {
-    await fs.promises.writeFile(filePath, JSON.stringify(parking_lot, null, 2));
 
-}
-
-export async function park(registrationNumber: string, color: string) {
+export async function park(registrationNumber: string, color: string): Promise<number> {
     try {
         const parking_lot = await getParking_lot();
         const available = parking_lot.slots?.find(slot => slot.car == null);
         if (!available) {
-            return null
+            return 0
         }
         available.car = { registrationNumber: registrationNumber.trim(), color: color.trim() }
         await saveFile(parking_lot);
+        return available.slotNumber
     } catch (error) {
         console.log(error)
+        return 0
     }
 }
 
 
-async function leave(slotNumber: number) {
+export async function leave(slotNumber: number): Promise<boolean> {
     try {
         const parking_lot = await getParking_lot();
 
-        if (!parking_lot.slots) {
-            return null;
+        if (!parking_lot?.slots) {
+            throw new Error('Create parking lot')
         }
         const targetSlot = parking_lot.slots[slotNumber - 1];
         if (!targetSlot.car) {
@@ -74,15 +81,15 @@ async function leave(slotNumber: number) {
         }
         parking_lot.slots[parking_lot.slots.length - 1].car = null;
 
-        await fs.promises.writeFile(filePath, JSON.stringify(parking_lot, null, 2));
-
-        console.log(`Car has left from slot ${slotNumber}, and the subsequent cars have shifted.`);
+        await saveFile(parking_lot)
+        return true
     } catch (error) {
         console.log("Error while processing leave request:", error);
+        return false 
     }
 }
 
-async function getStatus(): Promise<IParkingLot | null> {
+export async function getStatus(): Promise<IParkingLot | null> {
     try {
         const parking_lot = await getParking_lot();
         if (!parking_lot || !parking_lot.slots) {
@@ -160,27 +167,4 @@ async function slotNumberByRegistratoinNumber(registrationNumber: string): Promi
     }
 }
 
-async function main() {
-    try {
-        await initializeFile(5);
-        await park('KA-01-HH-1234', 'white')
-        await park('KA-01-HH-9999', 'white')
-        await park('wqwerr', 'red')
-        await park('wqwerr', 'red')
-        await park('wqwerr', 'red')
-
-        await leave(3)
-
-        await getRegistrationNumbersByColor('white')
-
-        await getSlotNumbersForCarsByColor('White')
-
-        const number = await slotNumberByRegistratoinNumber('KA-01-HH-9999')
-        console.log(number)
-
-    } catch (error) {
-        console.log(error);
-    }
-}
-main()
 
