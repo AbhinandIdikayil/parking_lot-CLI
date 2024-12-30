@@ -63,7 +63,7 @@ export const plate_numbers_by_colors = async (color: string) => {
     try {
         const registrationNumbers = await getRegistrationNumbersByColor(color)
         if (registrationNumbers?.length == 0) {
-            console.log(chalk.redBright('No data found'))
+            console.log(chalk.whiteBright('No data found'))
         } else {
             registrationNumbers?.forEach(registerationNumber =>
                 console.log(registerationNumber)
@@ -78,7 +78,7 @@ export const slot_numbers_by_color = async (color: string) => {
     try {
         const slots = await getSlotNumbersForCarsByColor(color)
         if (slots?.length == 0) {
-            console.log(chalk.redBright('No data found'));
+            console.log(chalk.whiteBright('No data found'));
         } else {
             slots?.forEach(slot => {
                 console.log(slot);
@@ -89,6 +89,15 @@ export const slot_numbers_by_color = async (color: string) => {
     }
 }
 
-export const slot_number_by_plate_number = () => {
-
+export const slot_number_by_plate_number = async (plate: string) => {
+    try {
+        const slotNumber = await slotNumberByRegistratoinNumber(plate)
+        if(slotNumber){
+            console.log(slotNumber)
+        } else {
+            console.log(chalk.whiteBright('No data found'))
+        }
+    } catch (error) {
+        console.log(error)
+    }
 }
