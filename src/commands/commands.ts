@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { getRegistrationNumbersByColor, getStatus, initializeFile, leave, park } from "./file.js"
+import { getRegistrationNumbersByColor, getSlotNumbersForCarsByColor, getStatus, initializeFile, leave, park, slotNumberByRegistratoinNumber } from "./file.js"
 import Table from 'cli-table3';
 
 
@@ -74,8 +74,19 @@ export const plate_numbers_by_colors = async (color: string) => {
     }
 }
 
-export const slot_numbers_by_color = () => {
-
+export const slot_numbers_by_color = async (color: string) => {
+    try {
+        const slots = await getSlotNumbersForCarsByColor(color)
+        if (slots?.length == 0) {
+            console.log(chalk.redBright('No data found'));
+        } else {
+            slots?.forEach(slot => {
+                console.log(slot);
+            })
+        }
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export const slot_number_by_plate_number = () => {

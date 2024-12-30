@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import { create_parking_lot, leave_lot, park_vehicle, plate_numbers_by_colors, status } from './commands/commands.js'
+import { create_parking_lot, leave_lot, park_vehicle, plate_numbers_by_colors, slot_numbers_by_color, status } from './commands/commands.js'
 
 const program = new Command()
 
@@ -31,7 +31,7 @@ program
 program
     .command('slot_numbers_for_cars_with_color <color>')
     .description('Print slot numbers for cars with color')
-    .action
+    .action((color: string) => slot_numbers_by_color(color))
 
 program
     .command('slot_number_for_registration_number <plate>')

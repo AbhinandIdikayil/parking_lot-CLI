@@ -124,7 +124,7 @@ export async function getRegistrationNumbersByColor(color: string): Promise<stri
     }
 }
 
-async function getSlotNumbersForCarsByColor(color: string): Promise<number[] | null> {
+export async function getSlotNumbersForCarsByColor(color: string): Promise<number[] | null> {
     try {
         const parking_lot = await getParking_lot();
         if (!parking_lot) {
@@ -138,7 +138,6 @@ async function getSlotNumbersForCarsByColor(color: string): Promise<number[] | n
         const slots = parking_lot.slots
             .filter(slot => slot.car?.color.toLowerCase() == color.trim().toLowerCase())
             .map(slot => slot.slotNumber)
-        console.log(slots)
         return slots
     } catch (error) {
         console.log(error)
@@ -146,7 +145,7 @@ async function getSlotNumbersForCarsByColor(color: string): Promise<number[] | n
     }
 }
 
-async function slotNumberByRegistratoinNumber(registrationNumber: string): Promise<number | null> {
+export async function slotNumberByRegistratoinNumber(registrationNumber: string): Promise<number | null> {
     try {
         const parking_lot = await getParking_lot();
         if (!parking_lot) {
