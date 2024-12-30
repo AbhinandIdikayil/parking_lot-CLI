@@ -1,0 +1,20 @@
+{
+  "name": "parking_lot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^22.10.2",
+    "chalk": "^4.1.2",
+    "commander": "^12.1.0",
+    "typescript": "^5.7.2"
+  }
+}
