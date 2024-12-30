@@ -106,7 +106,7 @@ export async function getStatus(): Promise<IParkingLot | null> {
     }
 }
 
-async function getRegistrationNumbersByColor(color: string): Promise<string[] | null> {
+export async function getRegistrationNumbersByColor(color: string): Promise<string[] | null> {
     try {
         const parking_lot = await getParking_lot();
         if (!parking_lot || !parking_lot.slots) {
@@ -117,7 +117,6 @@ async function getRegistrationNumbersByColor(color: string): Promise<string[] | 
         const byColors = parking_lot.slots
             .filter(slot => slot.car?.color.toLowerCase() === color.trim().toLowerCase())
             .map(slot => slot.car!.registrationNumber)
-        console.log(byColors)
         return byColors;
     } catch (error) {
         console.log(error)

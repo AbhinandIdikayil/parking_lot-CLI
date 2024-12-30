@@ -26,7 +26,7 @@ program
 program
     .command('registration_numbers_for_cars_with_color <color>')
     .description('Print plate numbers with car color')
-    .action(plate_numbers_by_colors)
+    .action((color: string) => plate_numbers_by_colors(color))
 
 program
     .command('slot_numbers_for_cars_with_color <color>')
