@@ -20,6 +20,6 @@
     "typescript": "^5.7.2"
   },
   "bin": {
-    "parking_lot": "bin/parking_lot.sh"
+    "parking_lot": "bin/parking_lot"
   }
 }
