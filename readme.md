@@ -18,6 +18,8 @@ A command-line interface application for managing a parking lot system. This CLI
    ```bash
     # For windows
     bin/setup.bat
+    
+    bin/parking_lot.bat
 
 3. Available commands:
    ```bash
